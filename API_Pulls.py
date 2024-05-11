@@ -23,7 +23,6 @@ class NHLAPIAccessor:
 
         df = pd.json_normalize(df)
         
-
         cols = ['date', 'id', 'season', 'gameType',
                 'awayTeam.id', 'awayTeam.abbrev', 'awayTeam.score',
                 'homeTeam.id', 'homeTeam.abbrev', 'homeTeam.score',
