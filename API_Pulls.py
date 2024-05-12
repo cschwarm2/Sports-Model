@@ -23,26 +23,29 @@ class NHLAPIAccessor:
 
         df = pd.json_normalize(df)
         
-        cols = ['date', 'id', 'season', 'gameType',
-                'awayTeam.id', 'awayTeam.abbrev', 'awayTeam.score',
-                'homeTeam.id', 'homeTeam.abbrev', 'homeTeam.score',
-                'gameOutcome.lastPeriodType']
+        # cols = ['date', 'id', 'season', 'gameType',
+        #         'awayTeam.id', 'awayTeam.abbrev', 'awayTeam.score',
+        #         'homeTeam.id', 'homeTeam.abbrev', 'homeTeam.score',
+        #         'gameOutcome.lastPeriodType']
 
-        return df[cols]
+        return df
 
 
     def getBoxScore(gameID):
         data = requests.get(NHLAPI_base+f"gamecenter/{gameID}/boxscore").json()
-        dataPD = pd.json_normalize(data['playerByGameStats'])
 
-        df = []
-        for col in dataPD.columns:
-            for p in range(0, len(dataPD[col][0])):
-                rw = dataPD[col][0][p]
-                rw['team'] = col.split('.')[0]
-                rw['positionGrp'] = col.split('.')[1]
-                df.append(rw)
-        
-        df = pd.json_normalize(df)
-
+        try:
+            dataPD = pd.json_normalize(data['playerByGameStats'])
+            df = []
+            for col in dataPD.columns:
+                for p in range(0, len(dataPD[col][0])):
+                    rw = dataPD[col][0][p]
+                    rw['team'] = col.split('.')[0]
+                    rw['positionGrp'] = col.split('.')[1]
+                    df.append(rw)
+            
+            df = pd.json_normalize(df)
+        except:
+            #print(f"{gameID} does not have any player stats")
+            df = None
         return df
