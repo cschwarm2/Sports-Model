@@ -46,6 +46,5 @@ class NHLAPIAccessor:
             
             df = pd.json_normalize(df)
         except:
-            #print(f"{gameID} does not have any player stats")
             df = None
         return df
