@@ -48,3 +48,12 @@ class NHLAPIAccessor:
         except:
             df = None
         return df
+
+class NHLadvanced:
+
+    def MPplayers(season, team):
+        
+        storage_options = {'User-Agent': 'Mozilla/5.0'}
+        data = pd.read_csv(f"https://moneypuck.com/moneypuck/playerData/teamPlayerGameByGame/{season}/regular/skaters/{team}.csv", storage_options=storage_options)
+
+        return data
